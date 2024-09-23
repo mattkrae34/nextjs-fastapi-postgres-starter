@@ -10,11 +10,9 @@
 
 ### First-Time Setup
 
-1. `cd` into `backend` and run `poetry install`.
-2. `cd` into `frontend` and run `npm install`.
+1. Run `make init`
+
 
 ### Running the Application
-
-1. From the root directory, run `docker compose up`.
-2. In a separate terminal, `cd` into `backend` and run `poetry run uvicorn main:app --reload`.
-3. In a separate terminal, `cd` into `frontend` and run `npm run dev`.
+1. Run `make run` or `docker compose up --build` to start the backend application and database.
+2. In another terminal, `cd` into `frontend` and run `npm run dev` to start the frontend application.
