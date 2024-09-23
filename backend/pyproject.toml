@@ -1,18 +1,19 @@
 [tool.poetry]
 name = "backend"
 version = "0.1.0"
+package-mode = false
 description = ""
 authors = ["Your Name <you@example.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">3.7"
-fastapi = "*"
-sqlalchemy = "*"
-asyncpg = "*"
+python = ">3.10"
+fastapi = "0.115.0"
+sqlalchemy = { version = "2.0.32", extras = ["asyncio"] }
+asyncpg = "0.29.0"
 greenlet = "*"
 psycopg2 = "*"
-uvicorn = "*"
+uvicorn = { version = "0.30.6", extras = ["standard"] }
 
 
 [build-system]

@@ -1,10 +1,55 @@
 services:
+  backend:
+    image: fastapi-starter
+    depends_on:
+      - database
+    build:
+      context: ${PWD}/backend
+      dockerfile: docker/Dockerfile
+      target: dev
+    volumes:
+      - ${PWD}/backend/src:/usr/src/backend
+    working_dir: /usr/src/backend
+    # host is required for docker; the default bind of 127.0.0.1 will not work
+    entrypoint:
+      [
+        "python3",
+        "-Xfrozen_modules=off",
+        "-m",
+        "debugpy",
+        "--listen",
+        "0.0.0.0:5678",
+        "-m",
+        "uvicorn",
+        "main:app",
+        # "--proxy-headers",
+        "--root-path",
+        "/api",
+        "--app-dir", 
+        "/usr/src/backend",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8081",
+        "--log-config",
+        "log_conf.yaml",
+        "--reload",
+      ]
+    ports:
+      - 5678:5678
+      - 8081:8081
+    init: true # This allows ctrl-c to shut down the container
   database:
     image: postgres
     ports:
-      - "5432:5432"
+      - 127.0.0.1:5432:5432
     environment:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
       POSTGRES_DB: "postgres"
     restart: always
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
